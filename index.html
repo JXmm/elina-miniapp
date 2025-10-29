@@ -26,7 +26,9 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            background: linear-gradient(135deg, #2563eb, #06b6d4, #3b82f6);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease-in-out infinite;
             color: white;
             min-height: 100vh;
             display: flex;
@@ -35,13 +37,19 @@
             padding: 20px;
         }
 
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .mini-app {
             max-width: 450px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 20px;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
@@ -61,6 +69,12 @@
             border: 3px solid rgba(255, 255, 255, 0.8);
             object-fit: cover;
             display: block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .name {
@@ -74,6 +88,13 @@
             font-size: 14px;
             opacity: 0.9;
             font-weight: 300;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
         .content {
@@ -95,12 +116,30 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover:before {
+            opacity: 1;
         }
 
         .service-card:hover {
             background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
         }
 
         .service-icon {
@@ -119,6 +158,25 @@
             opacity: 0.8;
         }
 
+        .special-offer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .special-offer h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .special-offer p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
         .footer {
             text-align: center;
             padding: 20px;
@@ -129,7 +187,7 @@
 
         .action-buttons {
             display: grid;
-            gap: 10px;
+            gap: 12px;
             margin-top: 30px;
         }
 
@@ -146,16 +204,35 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover:before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: rgba(255, 255, 255, 0.95);
-            color: #d97706;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
         }
 
         .btn-primary:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: scale(1.02);
+            background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
         .btn-outline {
@@ -166,7 +243,14 @@
 
         .btn-outline:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .mission {
+            font-style: italic;
+            opacity: 0.8;
+            margin-top: 10px;
         }
 
         /* Success message animation */
@@ -220,36 +304,38 @@
 <body>
     <div class="mini-app">
         <div class="header">
-    <img src="elina-photo.png" alt="Элина Гонцова" class="avatar" onerror="console.log('Photo failed'); this.style.display='none';">
+            <img src="elina-photo.png" alt="Элина Гонцова" class="avatar" onerror="console.log('Photo failed'); this.style.display='none';">
             <div class="name">Элина Гонцова</div>
             <div class="title">Дипломированный Энергокоуч</div>
+            <div class="subtitle">Бережно к тебе ✨</div>
+            <div class="mission">Управление энергией и новой версией себя</div>
         </div>
 
         <div class="content">
             <div class="services">
                 <div class="service-card" onclick="selectService('energy-therapy')">
-                    <div class="service-icon">💫</div>
-                    <div class="service-title">Энерготерапия</div>
-                    <div class="service-desc">Трансформация по Методу Соло</div>
+                    <div class="service-icon">✨</div>
+                    <div class="service-title">Энерготерапия по Методу Соло</div>
+                    <div class="service-desc">Индивидуальная работа с энергополем</div>
                 </div>
 
                 <div class="service-card" onclick="selectService('consultation')">
-                    <div class="service-icon">🎭</div>
-                    <div class="service-title">Групповые Расстановки</div>
-                    <div class="service-desc">Работа с семейными системами</div>
+                    <div class="service-icon">👥</div>
+                    <div class="service-title">Групповые расстановки</div>
+                    <div class="service-desc">Трансформационные сессии в формате группы</div>
                 </div>
 
                 <div class="service-card" onclick="selectService('personal')">
-                    <div class="service-icon">👤</div>
-                    <div class="service-title">Личная Терапия</div>
-                    <div class="service-desc">Индивидуальная работа</div>
+                    <div class="service-icon">🤝</div>
+                    <div class="service-title">Личная терапия</div>
+                    <div class="service-desc">Работа с убеждениями и трансформация жизни</div>
                 </div>
+            </div>
 
-                <div class="service-card" onclick="selectService('free-session')">
-                    <div class="service-icon">🎁</div>
-                    <div class="service-title">Бесплатная Консультация</div>
-                    <div class="service-desc">Первая сессия энерготерапии</div>
-                </div>
+            <div class="special-offer">
+                <h3>🎁 Первая терапия с оплатой по сердцу</h3>
+                <p>Готовы к трансформациям? Напишите слово <strong>РАЗБОР</strong> в личные сообщения</p>
+                <button class="btn btn-primary" onclick="sendData('razbor')" style="margin-top: 15px; font-size: 14px;">РАЗБОР</button>
             </div>
 
             <div class="action-buttons">
@@ -324,34 +410,40 @@
             };
 
             try {
-                if (isInTelegram && tg && tg.sendData) {
-                    // Send to Telegram Bot
-                    tg.sendData(JSON.stringify(data));
+                const urls = {
+                    'book_session': 'https://t.me/elina_goncova?text=Хочу+записаться+на+терапию',
+                    'channel': 'https://t.me/energy_elina',
+                    'interested_energy-therapy': 'https://t.me/elina_goncova?text=Интересует+энерготерапия',
+                    'interested_consultation': 'https://t.me/elina_goncova?text=Интересуют+расстановки',
+                    'interested_personal': 'https://t.me/elina_goncova?text=Хочу+личную+терапию',
+                    'interested_free-session': 'https://t.me/elina_goncova?start=free_consultation',
+                    'razbor': 'https://t.me/elina_goncova?text=РАЗБОР'
+                };
 
-                    // Show success notification
-                    showSuccess();
-                } else {
-                    // Fallback for web/browser view
-                    const fallbackUrls = {
-                        'book_session': 'https://t.me/elina_goncova?text=Хочу+записаться+на+терапию',
-                        'channel': 'https://t.me/energy_elina',
-                        'interested_energy-therapy': 'https://t.me/elina_goncova?text=Интересует+энерготерапия',
-                        'interested_consultation': 'https://t.me/elina_goncova?text=Интересуют+расстановки',
-                        'interested_personal': 'https://t.me/elina_goncova?text=Хочу+личную+терапию',
-                        'interested_free-session': 'https://t.me/elina_goncova?start=free_consultation'
-                    };
-
-                    if (fallbackUrls[action]) {
-                        window.open(fallbackUrls[action], '_blank');
+                if (urls[action]) {
+                    if (isInTelegram && tg && tg.openLink) {
+                        // Правильный способ abrir ссылок в Telegram Mini App
+                        tg.openLink(urls[action], { try_instant_view: false });
+                    } else {
+                        // Browser fallback
+                        window.open(urls[action], '_blank');
                     }
 
-                    // Show success in browser
-                    showSuccess('В Telegram сработает лучше! 😉');
+                    // Отправить данные в бот если возможно
+                    if (isInTelegram && tg && tg.sendData) {
+                        tg.sendData(JSON.stringify(data));
+                    }
+
+                    showSuccess();
                 }
             } catch (error) {
                 console.error('Error sending data:', error);
                 // Force fallback
-                window.open('https://t.me/elina_goncova', '_blank');
+                if (isInTelegram && tg && tg.openTelegramLink) {
+                    tg.openTelegramLink('https://t.me/elina_goncova');
+                } else {
+                    window.open('https://t.me/elina_goncova', '_blank');
+                }
             }
         }
 
